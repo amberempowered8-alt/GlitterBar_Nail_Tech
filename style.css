@@ -174,11 +174,16 @@ a { text-decoration: none; color: inherit; }
 .gallery-tile {
   aspect-ratio: 1; border-radius: var(--radius); position: relative; overflow: hidden;
   display: flex; align-items: flex-end; padding: 18px;
+  background: linear-gradient(135deg, #FF9AC6, #C2185B);
 }
 .gallery-tile span {
   color: #fff; font-family: var(--font-display); font-weight: 600; font-size: 0.9rem;
   text-shadow: 0 2px 8px rgba(0,0,0,0.35);
 }
+.gallery-tile.has-photo img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+}
+.gallery-tile.has-photo span { position: relative; z-index: 1; }
 .tile-1 { background: linear-gradient(135deg, #FF9AC6, #C2185B); }
 .tile-2 { background: linear-gradient(135deg, #FFD6E8, #FF4FA1); }
 .tile-3 { background: linear-gradient(135deg, #B983FF, #FF4FA1); }
@@ -186,6 +191,12 @@ a { text-decoration: none; color: inherit; }
 .tile-5 { background: linear-gradient(135deg, #8E1245, #C2185B); }
 .tile-6 { background: linear-gradient(135deg, #FF4FA1, #B983FF); }
 .gallery-note { text-align: center; color: var(--color-text-soft); font-size: 0.85rem; margin-top: 24px; }
+
+/* ---------- Loading state (shown briefly while Airtable content fetches) ---------- */
+.loading {
+  grid-column: 1 / -1; text-align: center; color: var(--color-text-soft);
+  font-size: 0.95rem; padding: 2.5rem 1rem;
+}
 
 /* ---------- Testimonials ---------- */
 .testimonial-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 20px; }
