@@ -10,13 +10,15 @@ You own this site outright. Host it free, forever, on GitHub Pages. No monthly f
 
 ## What's in this download
 
-- `index.html` — the site itself (all your text lives here)
+- `index.html` — your site's structure and content sections
 - `style.css` — your colors, fonts, and the glitter effect (change once, updates everywhere)
-- `script.js` — don't touch this one, it just runs the sparkle animation and menu
-- `assets/` — folder for your logo and nail photos
+- `script.js` — the engine that syncs your Services, Gallery, and Testimonials sections from Airtable; don't touch this one unless you know JS
+- `.github/workflows/sync.yml` — the automatic sync job
 - `SETUP-GUIDE.md` — this file
 
 This template ships with the **"Glitter Bar"** palette — deep rose (#C2185B) and hot pink (#FF4FA1) with an animated sparkle field in the hero. It's built to feel girly, glossy, and a little playful, on purpose — see "Changing the Vibe" below if that's not your brand.
+
+**Two separate Airtable bases work together here:** one powers your **booking form** (Step 2), the other powers your **Services, Gallery, and Testimonials content** (Step 3). They're independent — you'll set up both, but they don't need to match each other.
 
 ---
 
@@ -30,7 +32,7 @@ This template ships with the **"Glitter Bar"** palette — deep rose (#C2185B) a
 1. Click the "+" icon top-right → "New repository."
 2. Name it exactly `yourusername.github.io` (using YOUR GitHub username — this exact naming is what makes GitHub host it for free).
 3. Set it to Public. Click "Create repository."
-4. Upload `index.html`, `style.css`, `script.js`, and the `assets` folder.
+4. Upload `index.html`, `style.css`, `script.js`, and the `.github` folder (keep `.github/workflows/sync.yml` at that exact nested path).
 5. Now connect your booking form:
    - Open this Airtable base: [https://airtable.com/appnqrPYt6SPdmsoE](https://airtable.com/appnqrPYt6SPdmsoE)
    - Click **Copy base** (top right) — this creates a full copy in YOUR OWN free Airtable account.
@@ -39,14 +41,41 @@ This template ships with the **"Glitter Bar"** palette — deep rose (#C2185B) a
    - Open `index.html`, find `YOUR_AIRTABLE_FORM_LINK`, and paste your link in its place.
 6. Commit your changes. Within a few minutes your site is live at `https://yourusername.github.io`.
 
-## Step 3: Edit your services and prices
+## Step 3: Connect your Services, Gallery & Testimonials
 
-The included services (Classic Gel $55, Sculpted Extension Set $95, Custom Nail Art from $20) match the form's Service dropdown exactly. If you change a price or add a service:
+Unlike the booking form above, this content updates your site automatically — no code editing, ever, once it's set up.
 
-1. Update it in `index.html` inside the `<div class="services-grid">` section.
-2. Also update the **Service** field's options in your Airtable base (open the Bookings table → click the Service column header → Edit field) so the dropdown matches.
+1. Open your **Master Core Blueprint** link for this template's content base and click **Duplicate Base** to save it into your own workspace.
+2. Confirm it has three tables: **Services**, **Gallery**, and **Testimonials**, each with a `Status` field.
 
-Keeping these two in sync is the only manual step in the whole system.
+**Services table fields:**
+- `Service Name` — e.g. "Classic Gel"
+- `Icon` — an emoji shown in the icon circle, e.g. 💫
+- `Description` — one or two sentences
+- `Price` — shown exactly as typed, e.g. "$55" or "from $20"
+- `Featured` — check this box for the one service you want visually highlighted (only feature one at a time)
+- `Status` — set to **Published** to make it live
+
+**Gallery table fields:**
+- `Caption` — a short label, e.g. "chrome french"
+- `Photo` — upload your actual nail photo here
+- `Status` — set to **Published** to make it live
+
+**Testimonials table fields:**
+- `Client Name` — e.g. a first name and last initial
+- `Quote` — the review text
+- `Status` — set to **Published** to make it live
+
+3. This template needs four GitHub repo secrets (Settings → Secrets and variables → Actions → New repository secret):
+   - `AIRTABLE_TOKEN` — a Personal Access Token scoped to `data.records:read` on your duplicated content base only
+   - `AIRTABLE_BASE_ID` — found in your browser's address bar when viewing your content base (starts with `app...`)
+   - `AIRTABLE_SERVICES_TABLE` — the exact name of your Services table (defaults to `Services` if left blank)
+   - `AIRTABLE_GALLERY_TABLE` — the exact name of your Gallery table (defaults to `Gallery` if left blank)
+   - `AIRTABLE_TESTIMONIALS_TABLE` — the exact name of your Testimonials table (defaults to `Testimonials` if left blank)
+
+**Security best practice:** always restrict your token to Read-Only (`data.records:read`) access. This ensures visitors can never modify or erase records in your database.
+
+4. Trigger the first sync: go to your repo's **Actions** tab → **Sync services, gallery & testimonials from Airtable** → **Run workflow**. See the companion **GitHub Actions Quick-Start SOP** for the exact click-by-click.
 
 ## Step 4: Edit your business details
 
@@ -70,9 +99,7 @@ Change any of these to a hex code from a free color picker, save, and commit. Th
 
 ## Step 6: Add your own nail photos
 
-1. Upload your photos into the `assets` folder in GitHub.
-2. In `index.html`, find the `<div class="gallery-grid">` section — each `<div class="gallery-tile ...">` is currently a colored gradient placeholder.
-3. Replace a tile's background in `style.css` (search for `.tile-1` etc.) with `background-image: url('assets/your-photo.jpg'); background-size: cover; background-position: center;` instead of the gradient.
+Add a row to your **Gallery** table in Airtable (Step 3), upload the photo to the `Photo` field, give it a `Caption`, and set `Status` to **Published**. The next sync picks it up automatically — no code editing, no touching `style.css` tiles.
 
 ## Changing the Vibe
 
@@ -86,6 +113,10 @@ This palette is deliberately girly-pop — if that's not your brand (say, a more
 Same as every AE9 Labs template — see the domain section of the Local Service Provider SOP, or GitHub's own Settings → Pages → Custom domain screen, which shows you exactly what DNS records to add.
 
 ---
+
+## If Something Isn't Showing Up
+
+See the companion **Airtable Quick-Start SOP** and **GitHub Actions Quick-Start SOP** — they walk through, in order, exactly what to check before assuming anything's broken (it's almost always a normal sync delay, not a bug).
 
 ## You're done
 
